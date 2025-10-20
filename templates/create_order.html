@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html> 
+<html>
+<head>
+    <title>Создать новый заказ</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select { padding: 8px; width: 300px; border: 1px solid #ddd; border-radius: 4px; }
+        .btn { padding: 10px 15px; background: #4CAF50; color: white; border: none; border-radius: 4px; margin-right: 10px; }
+        .item-row { margin-bottom: 10px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background: #f9f9f9; }
+        .remove-btn { background: #f44336; padding: 5px 10px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1>Создать новый заказ</h1>
+    <form method="POST">
+        <div class="form-group">
+            <label>Партнер:</label>
+            <select name="partner_id" required>
+                <option value="">-- Партнер --</option>
+                {% for partner in partners %}
+                <option value="{{ partner[0] }}">{{ partner[1] }} ({{ partner[2] }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <h3>Товар:</h3>
+        <div id="items">
+            <div class="item-row">
+                <select name="product_id[]" required>
+                    <option value="">-- Товар --</option>
+                    {% for product in products %}
+                    <option value="{{ product[0] }}">{{ product[1] }} (${{ "%.2f"|format(product[2]) }})</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity[]" min="1" value="1" required style="width: 100px;">
+            </div>
+        </div>
+        
+        <button type="button" onclick="addItem()" style="background: #2196F3;" class="btn">Добавить товар</button>
+        <br><br>
+        <button type="submit" class="btn">Создать заказ</button>
+    </form>
+    
+    <br>
+    <a href="/">Назад</a>
+    
+    <script>
+        function addItem() {
+            const itemsDiv = document.getElementById('items');
+            const newItem = document.createElement('div');
+            newItem.className = 'item-row';
+            newItem.innerHTML = `
+                <select name="product_id[]" required>
+                    <option value="">-- Select Product --</option>
+                    {% for product in products %}
+                    <option value="{{ product[0] }}">{{ product[1] }} (${{ "%.2f"|format(product[2]) }})</option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity[]" min="1" value="1" required style="width: 100px;">
+                <button type="button" class="remove-btn" onclick="this.parentElement.remove()">Удалить</button>
+            `;
+            itemsDiv.appendChild(newItem);
+        }
+    </script>
+</body>
+</html>

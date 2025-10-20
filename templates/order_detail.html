@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<title>Детали заказа</title>
+	<style>
+		body { font-family: Arial, sans-serif; margin: 40px; }
+		table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+		th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+		th { background-color: #f2f2f2; }
+		.btn { padding: 10px 15px; background: #4CAF50; color: white; text-decoration: none; border-radius: 4px; }
+		.order-info { background: #f8f9fa; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+	</style>
+</head>
+<body>
+	<div class="order-info">
+		<h1>Детали заказа #{{ order[0] }}</h1>
+		<p><strong>Партнер:</strong> {{ order[1] }}</p>
+		<p><strong>Дата:</strong> {{ order[2] }}</p>
+		<p><strong>Всего:</strong> ${{ "%.2f"|format(order[3]) }}</p> 
+	</div>
+	
+	<h2>Состав</h2>
+	<table>
+		<tr>
+			<th>Товар</th>
+			<th>Колличество</th>
+			<th>Цена</th>
+			<th>Всего</th>
+		</tr>
+		{% for item in items %}
+		<tr>
+			<td>{{ item[0] }}</td>
+			<td>{{ item[1] }}</td>
+			<td>${{ "%.2f"|format(item[2]) }}</td>
+			<td>${{ "%.2f"|format(item[1] * item[2]) }}</td>
+		</tr>
+		{% endfor %}
+	</table>
+	
+	<br>
+	<a href="/" class="btn">Назад</a>
+</body>
+</html>

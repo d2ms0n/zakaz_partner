@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Система заказов партнера</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .btn { padding: 10px 15px; background: #4CAF50; color: white; text-decoration: none; border-radius: 4px; margin-right: 10px; }
+        .warning { color: #666; margin: 20px 0; padding: 15px; background: #f8f9fa; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Заказы</h1>
+    <a href="/create_order" class="btn">Создать новый заказ</a>    
+    {% if orders %}
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Партнер</th>
+            <th>Дата</th>
+            <th>Колличество</th>
+            <th>Действие</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order[0] }}</td>
+            <td>{{ order[1] }}</td>
+            <td>{{ order[2] }}</td>
+            <td>${{ "%.2f"|format(order[3]) }}</td>
+            <td><a href="/order/{{ order[0] }}">Детали</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+    <div class="warning">
+        <h3>Заказы не найдены</h3>
+    </div>
+    {% endif %}
+</body>
+</html>
